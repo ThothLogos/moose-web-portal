@@ -1,0 +1,22 @@
+# This is an example of a configuration file, you can rename this file to "config"
+# and then edit the appropriate settings as needed. Do not change the order of items
+# in this file. Any line that is blank/whitespace, or contains a # will be ignored
+# by the configuration parser.
+
+# Page title
+Website Title
+
+# Long name of server
+Example Server Name
+
+# Short name of server
+Example
+
+# Email contact for server administrator
+admin@none.none
+
+# Email contact for website administrator
+web@none.none
+
+# Main logo path
+/images/logo.png
