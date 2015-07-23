@@ -1,22 +1,49 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <title><%= settings.title %></title>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= settings.title %></title>
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/bootstrap-responive.css">
 </head>
 <body>
   <header>
-    <img src="<%= settings.logo_path %>"></img>
-    <h1><%= settings.server_long %></h1>
-    <nav>
-      <ul>
-        <li><a href="/" title="Home">Home</a></li>
-        <li><a href="/contact" title="Contact">Contact</a></li>
-      </ul>
-    </nav>
+    <img src="<%= settings.main_logo %>" id="main-logo"></img>
+    <img src="<%= settings.second_logo %>" id="second-logo"></img>
   </header>
-  <section>
-    <%= yield %>
-  </section>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"><%= settings.server_long %></a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="/" title="Home">Home</a></li> 
+          <li><a href="/contact" title="Contact">Contact</a></li>
+          <li><a href="/nothing" title="404">404</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+  <div class="container">
+    <section>
+      <%= yield %>
+    </section>
+  </div>
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-caption"><%= settings.footer_caption %> 2015</p>
+    </div>
+  </footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
 </body>
 </html>

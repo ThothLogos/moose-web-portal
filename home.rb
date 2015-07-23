@@ -1,4 +1,6 @@
 require 'sinatra'
+require 'pg'
+require './user.rb'
 require 'sinatra/reloader' if development?
 
 # Parses configuration options from 'config' file in site's root directory
@@ -27,10 +29,19 @@ set title:          @config[0],
     server_short:   @config[2],
     admin_mail:     @config[3],
     webmaster_mail: @config[4],
-    logo_path:      @config[5]
+    main_logo:      @config[5],
+    second_logo:    @config[6],
+    footer_caption: @config[7],
+    db_name:        @config[8],
+    db_user:        @config[9],
+    db_password:    @config[10]
 
 # Specify name of folder for CSS, JavaScript, Images
 set public_folder:  'assets'
+
+# Load user database
+db = User.new(settings.db_name, settings.db_user, settings.db_password)
+
 
 # Site top level
 get '/' do
@@ -40,4 +51,19 @@ end
 # Contact page
 get '/contact' do
   erb :contact
+end
+
+# Register page for new accounts
+get '/register' do
+  erb :register
+end
+
+# Password recovery page
+get '/recovery' do
+  erb :recovery
+end
+
+# 404
+not_found do
+  erb :not_found
 end

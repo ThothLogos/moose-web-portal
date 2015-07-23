@@ -1,2 +1,19 @@
-<p>Welcome to the web portal for the <%= settings.server_short %> server.</p>
-<p>Login stuff here</p>
+<p id="welcome"><%= settings.server_short %> Network Web Portal</p>
+<div id="login">
+  <form name="login" action="" method="post">
+    <div id="input-fields">
+      <h2 id="login-header">User Login</h2>
+      <div id="username">
+      <input type="text" placeholder="Username" required="">
+      </div>
+      <div id="password">
+      <input type="password" placeholder="Password" required="">
+      </div>
+      <div id="controls">
+      <a href="/register">Register</a>
+      <a href="/recovery">Forgot Password</a>
+      <input id="login-submit" type="submit" value="Login">
+      </div>
+    </div>
+  </form>
+</div>

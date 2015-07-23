@@ -20,3 +20,17 @@ web@none.none
 
 # Main logo path
 /images/logo.png
+
+# Secondary logo path
+/images/second_logo.png
+
+# Footer caption for site architect
+ThothLogos
+
+# Database name (PostgreSQL database)
+
+
+# Database user (PostgreSQL)
+
+
+# Database password (PostgreSQL)

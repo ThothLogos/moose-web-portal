@@ -1,0 +1,138 @@
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+header {
+  background-color: #336699;
+  color: #FFFFFF;
+  width: 100%;
+  height: 130px;
+  top: 0px;
+  position: relative;
+}
+
+header #logo {
+  padding-left: 5px;
+  padding-top: 5px;
+  float: left;
+  display: inline;
+}
+
+header h1 {
+  position: absolute;
+  display: inline;
+  margin-top: 40px;
+  margin-left: 50px;
+  font-size:   48px;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+#navbar {
+  position: absolute;
+  width: 100%;
+  height: 30px;
+  background-color: lightgrey;
+  top: 130px;
+}
+
+nav {
+  position: relative;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  position: relative;
+  height: 100%;
+  display: inline;
+  padding: 5px 20px 5px 20px;
+  background: #4488BB;
+}
+
+a {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #8B4500;
+}
+
+p {
+  font-family:  Helvetica, Arial, sans-serif;
+  font-size:    14px;
+}
+
+section {
+  position: relative;
+  top: 10px;
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+#welcome {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: 280px;
+  font-size: 24px;
+}
+
+footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0px;
+  height: 30px;
+  background-color: #336699;
+  color: #FFFFFF;
+}
+
+footer p {
+  position: relative;
+  float: right;
+  margin-right: 15px;
+  bottom: 7px;
+}
+
+form {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  background-color: #CCCCCC;
+  width: 210px;
+  height: 125px;
+}
+
+form h2 #login-header {
+  position: relative;
+  top: 5px;
+  left: 55px;
+  font-size: 18px;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+form input {
+  position: relative;
+  width: 200px;
+  margin-bottom: 5px;
+  left: 1px;
+}
+
+form a {
+  font-size: 9px;
+  text-decoration: none;
+  margin-left: 10px;
+  color: #336699;
+}
+
+form #submit {
+  width: 50px;
+  margin-left: 10px;
+}
+
+form #register {
+
+}
