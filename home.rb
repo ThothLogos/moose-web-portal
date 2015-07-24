@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'pg'
-require './user.rb'
+require './data.rb'
 require 'sinatra/reloader' if development?
 
 # Parses configuration options from 'config' file in site's root directory
@@ -40,8 +40,7 @@ set title:          @config[0],
 set public_folder:  'assets'
 
 # Load user database
-db = User.new(settings.db_name, settings.db_user, settings.db_password)
-
+db = UserData.new(settings.db_name, settings.db_user, settings.db_password)
 
 # Site top level
 get '/' do
