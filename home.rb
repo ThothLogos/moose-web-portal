@@ -32,7 +32,11 @@ set title:          @config[0],
     footer_caption: @config[7],
     db_name:        @config[8],
     db_user:        @config[9],
-    db_password:    @config[10]
+    db_password:    @config[10],
+    smtp_server:    @config[11],
+    smtp_port:      @config[12],
+    smtp_account:   @config[13],
+    smtp_password:  @config[14]
 
 # Specify name of folder for CSS, JavaScript, Images
 set public_folder:  'assets'
@@ -62,15 +66,20 @@ post '/register/?' do
   password = params[:password]
   confirm = params[:confirm]
 
-  duplicate = db.username_exist?(username) || db.email_exist?(email) ? true : false
+  dupe = db.username_exist?(username) || db.email_exist?(email) ? true : false
 
-  if !duplicate && (password == confirm)
-    db.add_user(username, email, password, "saltsaltsalt")
+  if !dupe && password == confirm
+    
+    db.send_mail_verification(email, settings.smtp_server, settings.smtp_port,
+                              settings.smtp_account, settings.smtp_password)
+
+    #db.add_user(username, email, password, "saltsaltsalt")
     erb :success, locals: { username:  username,
                             email:     email,
                             password:  password }
   else
-    erb :home
+    # flash error
+    erb :home # temp
   end
 end
 
@@ -86,6 +95,7 @@ post '/recovery/?' do
     erb :success, locals: { email:  email }
   else
     # flash failure
+    erb :home # temp
   end
 end
 
