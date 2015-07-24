@@ -5,7 +5,6 @@ require 'sinatra/reloader' if development?
 
 # Parses configuration options from 'config' file in site's root directory
 def read_config
-
   config_args = [] # Array to hold the options
 
   # Read each line, ignoring any lines containing the "#" character or
@@ -16,7 +15,6 @@ def read_config
       config_args << line unless line.include?('#') || line.empty?
     end
   end
-
   return config_args
 end
 
@@ -48,18 +46,47 @@ get '/' do
 end
 
 # Contact page
-get '/contact' do
+get '/contact/?' do
   erb :contact
 end
 
 # Register page for new accounts
-get '/register' do
+get '/register/?' do
   erb :register
 end
 
+# Request to create new account
+post '/register/?' do
+  username = params[:username]
+  email = params[:email]
+  password = params[:password]
+  confirm = params[:confirm]
+
+  duplicate = db.username_exist?(username) || db.email_exist?(email) ? true : false
+
+  if !duplicate && (password == confirm)
+    db.add_user(username, email, password, "saltsaltsalt")
+    erb :success, locals: { username:  username,
+                            email:     email,
+                            password:  password }
+  else
+    erb :home
+  end
+end
+
 # Password recovery page
-get '/recovery' do
+get '/recovery/?' do
   erb :recovery
+end
+
+post '/recovery/?' do
+  email = params[:email]
+  if db.email_exist?(email)
+    # send recovery mail
+    erb :success, locals: { email:  email }
+  else
+    # flash failure
+  end
 end
 
 # 404
