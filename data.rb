@@ -1,5 +1,6 @@
 require 'pg'
 require 'date'
+require 'pony'
 
 class UserData
 
@@ -40,6 +41,24 @@ class UserData
                         '#{password}',
                         '#{salt}',
                         '#{DateTime.now}' ) ")
+  end
+
+  def send_mail_verification(email, server, port, username, password)
+    subject = "Account Verification"
+    Pony.mail(
+      to:                   email,
+      via:                  :smtp,
+      via_options:          {
+        address:                server,
+        port:                   port,
+        enable_starttls_auto:   true,
+        user_name:              username,
+        password:               password,
+        authentication:         :plain,
+        domain:                 "localhost"
+                            },
+      subject:              subject,
+      body:                 "This is only a test." )
   end
 
 end
