@@ -1,6 +1,7 @@
 require 'pg'
 require 'date'
 require 'pony'
+require 'securerandom'
 
 class UserData
 
@@ -34,13 +35,31 @@ class UserData
   end
 
   # Add new user to users table
-  def add_user(username, email, password, salt)
-    @conn.exec("INSERT INTO users(username, email, password, salt, created)
+  def add_new_user(username, email, password, salt)
+    @conn.exec("INSERT INTO users (
+                         username,
+                         email,
+                         password,
+                         salt,
+                         created,
+                         verified,
+                         verifycode )
                 VALUES ('#{username}', 
                         '#{email}',
                         '#{password}',
                         '#{salt}',
-                        '#{DateTime.now}' ) ")
+                        '#{DateTime.now}',
+                        'f',
+                        '#{generate_verification_code}' ) ")
+  end
+
+  def generate_verification_code
+    return SecureRandom.hex(6)
+  end
+
+  def verification_code(email)
+    res = @conn.exec("SELECT verifycode FROM users WHERE email='#{email}'")
+    return res.getvalue(0,0)
   end
 
   def send_mail_verification(email, server, port, username, password)
@@ -58,7 +77,7 @@ class UserData
         domain:                 "localhost"
                             },
       subject:              subject,
-      body:                 "This is only a test." )
+      body:                 "Verification code: #{verification_code(email)}" )
   end
 
 end
