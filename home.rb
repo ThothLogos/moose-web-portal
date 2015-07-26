@@ -99,7 +99,7 @@ post '/recovery/?' do
                           settings.smtp_account, settings.smtp_password)
     erb :reset, locals: { email:  email }
   elsif !(code.nil? || code.empty?) && db.reset_exist?(code)
-    if newpassword = newconfirm
+    if newpassword == newconfirm
       db.change_password(code, newpassword)
       erb :resetsuccess
     else
