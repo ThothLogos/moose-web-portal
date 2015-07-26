@@ -69,11 +69,9 @@ post '/register/?' do
   dupe = db.username_exist?(username) || db.email_exist?(email) ? true : false
 
   if !dupe && password == confirm
-    
+    db.add_new_user(username, email, password, "salt")
     db.send_mail_verification(email, settings.smtp_server, settings.smtp_port,
                               settings.smtp_account, settings.smtp_password)
-
-    #db.add_user(username, email, password, "saltsaltsalt")
     erb :success, locals: { username:  username,
                             email:     email,
                             password:  password }
@@ -96,6 +94,22 @@ post '/recovery/?' do
   else
     # flash failure
     erb :home # temp
+  end
+end
+
+get '/verification/?' do
+  erb :verification
+end
+
+post '/verification/?' do
+  code = params[:verification]
+  if db.verification_exist?(code)
+    db.verify_account(code)
+    # flash success
+    erb :home # temp
+  else
+    # flash failure
+    erb :verification
   end
 end
 
