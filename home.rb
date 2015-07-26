@@ -8,7 +8,7 @@ def read_config
   config_args = [] # Array to hold the options
 
   # Read each line, ignoring any lines containing the "#" character or
-  # lines that contain only whitespace or are blank.
+  # lines that contain only whitespace/are blank.
   File.open("config", "r") do |file|
     file.each_line do |line|
       line.chomp!
@@ -86,21 +86,31 @@ get '/recovery/?' do
   erb :recovery
 end
 
+# Request password recovery
 post '/recovery/?' do
   email = params[:email]
   if db.email_exist?(email)
-    # send recovery mail
-    erb :success, locals: { email:  email }
+    db.set_reset_code(email)
+    db.send_mail_recovery(email,settings.smtp_server, settings.smtp_port,
+                          settings.smtp_account, settings.smtp_password)
+    erb :reset, locals: { email:  email }
   else
     # flash failure
     erb :home # temp
   end
 end
 
+# Submission request for password reset code
+post '/reset/?' do
+  code = params[:resetcode]
+end
+
+# Account verification page
 get '/verification/?' do
   erb :verification
 end
 
+# Request account verification
 post '/verification/?' do
   code = params[:verification]
   if db.verification_exist?(code)
