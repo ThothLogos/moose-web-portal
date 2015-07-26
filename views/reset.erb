@@ -1,14 +1,20 @@
-<% if email.empty? %>
+<% if email.nil? || email.empty? %>
    <p>Please visit <a href="/recovery">password recovery</a> if a reset is needed.</p>
 <% else %>
    <p>An email was sent to <%= email %> with a code to reset your password.</p>
 <% end %>
 <div id="reset">
-  <form id="reset" name="recovery" action="" method="post">
+  <form id="reset" name="reset" action="" method="post">
     <div id="input-fields">
       <h2 id="reset-header">Enter Recovery Code</h2>
-      <div id="email">
+      <div id="code">
       <input name="resetcode" type="text" placeholder="Recovery Code" required="">
+      </div>
+      <div id="newpassword">
+      <input name="newpassword" type="password" placeholder="New Password" required="">
+      </div>
+      <div id="newconfirm">
+      <input name="newconfirm" type="password" placeholder="Retype New Password" required="">
       </div>
       <div id="controls">
       <input id="reset-submit" type="submit" value="Submit">
