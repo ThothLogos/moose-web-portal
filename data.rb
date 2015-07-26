@@ -11,13 +11,6 @@ class UserData
                            :dbname => db_name,
                            :user => db_user,
                            :password => db_password)
-    # ~ Debug ~ #
-    res = @conn.exec("SELECT * FROM users")
-    fields = res.fields
-    res.each do |row|
-      puts row["id"] + " " + row["username"] + " " + row["email"] + " " +
-           row["password"] + " " + row["salt"] + " " + row["created"]
-    end
   end
 
   # Query user table for already registered username
@@ -53,15 +46,23 @@ class UserData
                         '#{generate_verification_code}' ) ")
   end
 
+  # Random 12-character code to serve as email verification/account activation
   def generate_verification_code
-    return SecureRandom.hex(6)
+    return SecureRandom.hex(8)
   end
 
+  # Returns the verification code stored in the database for a given email
   def verification_code(email)
     res = @conn.exec("SELECT verifycode FROM users WHERE email='#{email}'")
     return res.getvalue(0,0)
   end
 
+  def verification_exist?(code)
+    res = @conn.exec("SELECT verifycode FROM users WHERE verifycode='#{code}'")
+    return res.field_values("verifycode").empty? ? false : true
+  end
+
+  # Packages and sends email verification via SMTP
   def send_mail_verification(email, server, port, username, password)
     subject = "Account Verification"
     Pony.mail(
@@ -77,7 +78,15 @@ class UserData
         domain:                 "localhost"
                             },
       subject:              subject,
-      body:                 "Verification code: #{verification_code(email)}" )
+      body:                 ("Thank you for registering. You'll need to verify this"
+                          + " email before your account is active.\n\n\n"
+                          + "Verification code: #{verification_code(email)}") )
+  end
+
+  # Change account verified flag to true based on verification code
+  def verify_account(code)
+    res = @conn.exec("SELECT id FROM users WHERE verifycode='#{code}'")
+    @conn.exec("UPDATE users SET verified='t' WHERE id='#{res.getvalue(0,0)}'")
   end
 
 end
