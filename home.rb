@@ -89,20 +89,27 @@ end
 # Request password recovery
 post '/recovery/?' do
   email = params[:email]
-  if db.email_exist?(email)
+  code = params[:resetcode]
+  newpassword = params[:newpassword]
+  newconfirm = params[:newconfirm]
+
+  if !(email.nil? || email.empty?) && db.email_exist?(email)
     db.set_reset_code(email)
     db.send_mail_recovery(email,settings.smtp_server, settings.smtp_port,
                           settings.smtp_account, settings.smtp_password)
     erb :reset, locals: { email:  email }
+  elsif !(code.nil? || code.empty?) && db.reset_exist?(code)
+    if newpassword = newconfirm
+      db.change_password(code, newpassword)
+      erb :resetsuccess
+    else
+      # flash failure
+      erb :home
+    end
   else
     # flash failure
     erb :home # temp
   end
-end
-
-# Submission request for password reset code
-post '/reset/?' do
-  code = params[:resetcode]
 end
 
 # Account verification page
@@ -113,7 +120,7 @@ end
 # Request account verification
 post '/verification/?' do
   code = params[:verification]
-  if db.verification_exist?(code)
+  if db.verification_exist?(code) 
     db.verify_account(code)
     # flash success
     erb :home # temp
