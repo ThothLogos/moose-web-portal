@@ -106,7 +106,9 @@ class UserData
   # Checks to see if a provided password reset code exists in the database
   def reset_exist?(code)
     res = @conn.exec("SELECT resetcode FROM users WHERE resetcode='#{code}'")
-    return res.field_values("resetcode").empty? ? false : true
+    result = res.field_values("resetcode").empty? ? false : true
+    puts result
+    return result
   end
 
   # Packages and sends password recovery request email via SMTP
@@ -129,6 +131,11 @@ class UserData
                             },
       subject:              subject,
       body:                 body.join )
+  end
+
+  def change_password(code, newpassword)
+    @conn.exec("UPDATE users SET password='#{newpassword}'
+                WHERE resetcode='#{code}'")
   end
 
 end
